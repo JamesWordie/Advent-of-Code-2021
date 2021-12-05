@@ -579,34 +579,82 @@ function convertInputIntegerArray(input) {
   return inputArrInt;
 }
 
+function diagonal(grid, x1, x2, y1, y2) {
+  // x1=0 x2=8 y1=0 y2=8
+  // if (x1 > x2 && y1 > y2) {
+  //   for (let i = y1; (i) => y2; i--) {
+  //     for (let j = x1; (j) => x2; j--) {
+  //       if (i === j) {
+  //         grid[j][i] += 1;
+  //       }
+  //     }
+  //   }
+  // } else if (x1 > x2) {
+  //   for (let i = y1; i <= y2; i++) {
+  //     for (let j = x1; (j) => x2; j--) {
+  //       if (i === j) {
+  //         grid[j][i] += 1;
+  //       }
+  //     }
+  //   }
+  // } else if (y1 > y2) {
+  //   for (let i = y1; (i) => y2; i--) {
+  //     for (let j = x1; j <= x2; j++) {
+  //       if (i === j) {
+  //         grid[j][i] += 1;
+  //       }
+  //     }
+  //   }
+  // } else {
+  //   for (let i = y1; i <= y2; i++) {
+  //     for (let j = x1; j <= x2; j++) {
+  //       if (i === j) {
+  //         grid[j][i] += 1;
+  //       }
+  //     }
+  //   }
+  // }
+  if (x1 > x2) {
+    console.log(x1, x2, y1, y2);
+    return;
+    for (let i = y1; i <= y2; i++) {
+      for (let j = x1; (j) => x2; j--) {
+        // if (i === j || i - j === 9) {
+        //   grid[j][i] += 1;
+        // }
+      }
+    }
+  }
+  console.log(x1, x2, y1, y2);
+  for (let i = y1; i <= y2; i++) {
+    for (let j = x1; j <= x2; j++) {
+      if (i === j || i - j === 9) {
+        // console.log(x1, x2, y1, y2);
+        grid[j][i] += 1;
+      }
+    }
+  }
+  return grid;
+}
+
 function mapLines(grid, x1, x2, y1, y2) {
-  let copy = [...grid];
-
-  // if (x1 > x2) {
-  //   [x1, x2] = [x2, x1];
-  //   console.log(x1, x2, "x1 x2");
-  // }
-  // if (y1 > y2) {
-  //   [y1, y2] = [y2, y1];
-  //   console.log(x1, x2, "y1 y2");
-  // }
-
   if (x1 === x2) {
     if (y1 > y2) {
       [y1, y2] = [y2, y1];
     }
-
     for (let j = y1; j <= y2; j++) {
       grid[j][x1] += 1;
     }
   } else if (y1 === y2) {
+    // x1=0 x2=5 y1=9 y2=9
     if (x1 > x2) {
       [x1, x2] = [x2, x1];
     }
-
     for (let i = x1; i <= x2; i++) {
       grid[y1][i] += 1;
     }
+  } else {
+    diagonal(grid, x1, x2, y1, y2);
   }
 
   return grid;
@@ -614,25 +662,25 @@ function mapLines(grid, x1, x2, y1, y2) {
 
 function game(strInput) {
   let input = convertInputIntegerArray(strInput);
-  let grid = generateGrid(1000);
+  let grid = generateGrid(10); // change between 10 and 1000 for test vs real
 
   input.map((row) => {
     let [x1, y1] = row[0];
     let [x2, y2] = row[1];
 
-    if (x1 === x2 || y1 === y2) {
-      grid = mapLines(grid, x1, x2, y1, y2);
-    }
+    grid = mapLines(grid, x1, x2, y1, y2);
   });
   return grid;
 }
 
-const filledTable = game(input);
+const filledTable = game(testInput);
+console.table(filledTable);
 
 function countTable(grid) {
   let counter = 0;
-  for (let i = 0; i < 1000; i++) {
-    for (let j = 0; j < 1000; j++) {
+  // change between 10 and 1000 for test vs real
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
       if (grid[i][j] >= 2) {
         counter += 1;
       }
@@ -644,14 +692,43 @@ function countTable(grid) {
 console.log(countTable(filledTable));
 
 // let testGrid = [
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [1, 0, 1, 0, 0, 0, 0, 1, 1, 0],
+//   [0, 1, 1, 1, 0, 0, 0, 2, 0, 0],
+//   [0, 0, 2, 0, 1, 0, 1, 1, 1, 0],
+//   [0, 0, 0, 1, 0, 2, 0, 2, 0, 0],
+//   [0, 1, 1, 2, 3, 1, 3, 2, 1, 1],
+//   [0, 0, 0, 1, 0, 2, 0, 0, 0, 0],
+//   [0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+//   [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+//   [1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+//   [2, 2, 2, 1, 1, 1, 0, 0, 0, 0],
 // ];
+
+// function diagonal(grid, x1, x2, y1, y2) {
+//   // x1=0 x2=8 y1=0 y2=8
+//   for (let i = y1; i <= y2; i++) {
+//     for (let j = x1; j <= x2; j++) {
+//       // console.log(i, j);
+//       // grid[j][i] += 1;
+//       if (i === j) {
+//         grid[j][i] += 1;
+//       }
+//     }
+//   }
+//   return grid;
+// }
+
+let testGridEmpty = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+// console.table(diagonal(testGridEmpty, 2, 6, 0, 4));
