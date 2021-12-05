@@ -507,7 +507,7 @@ const testInput = `0,9 -> 5,9
 6,4 -> 2,0
 0,9 -> 2,9
 3,4 -> 1,4
-0,0 -> 8,8
+1,0 -> 9,8
 5,5 -> 8,2`;
 
 const inputArr = testInput
@@ -580,59 +580,13 @@ function convertInputIntegerArray(input) {
 }
 
 function diagonal(grid, x1, x2, y1, y2) {
-  // x1=0 x2=8 y1=0 y2=8
-  // if (x1 > x2 && y1 > y2) {
-  //   for (let i = y1; (i) => y2; i--) {
-  //     for (let j = x1; (j) => x2; j--) {
-  //       if (i === j) {
-  //         grid[j][i] += 1;
-  //       }
-  //     }
-  //   }
-  // } else if (x1 > x2) {
-  //   for (let i = y1; i <= y2; i++) {
-  //     for (let j = x1; (j) => x2; j--) {
-  //       if (i === j) {
-  //         grid[j][i] += 1;
-  //       }
-  //     }
-  //   }
-  // } else if (y1 > y2) {
-  //   for (let i = y1; (i) => y2; i--) {
-  //     for (let j = x1; j <= x2; j++) {
-  //       if (i === j) {
-  //         grid[j][i] += 1;
-  //       }
-  //     }
-  //   }
-  // } else {
-  //   for (let i = y1; i <= y2; i++) {
-  //     for (let j = x1; j <= x2; j++) {
-  //       if (i === j) {
-  //         grid[j][i] += 1;
-  //       }
-  //     }
-  //   }
-  // }
-  if (x1 > x2) {
-    console.log(x1, x2, y1, y2);
-    return;
-    for (let i = y1; i <= y2; i++) {
-      for (let j = x1; (j) => x2; j--) {
-        // if (i === j || i - j === 9) {
-        //   grid[j][i] += 1;
-        // }
-      }
-    }
-  }
-  console.log(x1, x2, y1, y2);
-  for (let i = y1; i <= y2; i++) {
-    for (let j = x1; j <= x2; j++) {
-      if (i === j || i - j === 9) {
-        // console.log(x1, x2, y1, y2);
-        grid[j][i] += 1;
-      }
-    }
+  const stepX = x1 < x2 ? 1 : -1;
+  const stepY = y1 < y2 ? 1 : -1;
+  // console.log(x1, x2, y1, y2);
+  for (let i = 0; i <= Math.abs(x1 - x2); i++) {
+    const x = x1 + i * stepX;
+    const y = y1 + i * stepY;
+    grid[y][x] += 1;
   }
   return grid;
 }
@@ -662,7 +616,7 @@ function mapLines(grid, x1, x2, y1, y2) {
 
 function game(strInput) {
   let input = convertInputIntegerArray(strInput);
-  let grid = generateGrid(10); // change between 10 and 1000 for test vs real
+  let grid = generateGrid(1000); // change between 10 and 1000 for test vs real
 
   input.map((row) => {
     let [x1, y1] = row[0];
@@ -673,14 +627,14 @@ function game(strInput) {
   return grid;
 }
 
-const filledTable = game(testInput);
-console.table(filledTable);
+const filledTable = game(input);
+// console.table(filledTable);
 
 function countTable(grid) {
   let counter = 0;
   // change between 10 and 1000 for test vs real
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
+  for (let i = 0; i < 1000; i++) {
+    for (let j = 0; j < 1000; j++) {
       if (grid[i][j] >= 2) {
         counter += 1;
       }
@@ -691,44 +645,17 @@ function countTable(grid) {
 
 console.log(countTable(filledTable));
 
-// let testGrid = [
-//   [1, 0, 1, 0, 0, 0, 0, 1, 1, 0],
-//   [0, 1, 1, 1, 0, 0, 0, 2, 0, 0],
-//   [0, 0, 2, 0, 1, 0, 1, 1, 1, 0],
-//   [0, 0, 0, 1, 0, 2, 0, 2, 0, 0],
-//   [0, 1, 1, 2, 3, 1, 3, 2, 1, 1],
-//   [0, 0, 0, 1, 0, 2, 0, 0, 0, 0],
-//   [0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-//   [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
-//   [1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-//   [2, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+// let testGridEmpty = [
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 // ];
-
-// function diagonal(grid, x1, x2, y1, y2) {
-//   // x1=0 x2=8 y1=0 y2=8
-//   for (let i = y1; i <= y2; i++) {
-//     for (let j = x1; j <= x2; j++) {
-//       // console.log(i, j);
-//       // grid[j][i] += 1;
-//       if (i === j) {
-//         grid[j][i] += 1;
-//       }
-//     }
-//   }
-//   return grid;
-// }
-
-let testGridEmpty = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
 
 // console.table(diagonal(testGridEmpty, 2, 6, 0, 4));
