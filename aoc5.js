@@ -561,8 +561,10 @@ const inputArrInt = inputArr.map((row) =>
 //   ],
 // ];
 
-function generateGrid() {
-  return new Array(10).fill(new Array(10).fill(0));
+function generateGrid(n) {
+  return Array(n)
+    .fill()
+    .map(() => Array(n).fill(null));
 }
 
 function convertInputIntegerArray(input) {
@@ -580,33 +582,40 @@ function convertInputIntegerArray(input) {
 function mapLines(grid, x1, x2, y1, y2) {
   let copy = [...grid];
 
-  if (x1 < x2) {
-    [x1, x2] = [x2, x1];
-  }
-  if (y1 < y2) {
-    [y1, y2] = [y2, y1];
-  }
+  // if (x1 > x2) {
+  //   [x1, x2] = [x2, x1];
+  //   console.log(x1, x2, "x1 x2");
+  // }
+  // if (y1 > y2) {
+  //   [y1, y2] = [y2, y1];
+  //   console.log(x1, x2, "y1 y2");
+  // }
 
   if (x1 === x2) {
-    [x1, x2] = [x1, x1 + 1];
-  }
-  if (y1 === y2) {
-    [y1, y2] = [y1, y1 + 1];
-  }
+    if (y1 > y2) {
+      [y1, y2] = [y2, y1];
+    }
 
-  for (let i = x1; i < x2; i++) {
-    for (let j = y1; j < y2; j++) {
-      console.log(i, j);
-      copy[i][j] += 1;
+    for (let j = y1; j <= y2; j++) {
+      grid[j][x1] += 1;
+    }
+  } else if (y1 === y2) {
+    if (x1 > x2) {
+      [x1, x2] = [x2, x1];
+    }
+
+    for (let i = x1; i <= x2; i++) {
+      grid[y1][i] += 1;
     }
   }
-  return copy;
+
+  return grid;
 }
 
 function game(strInput) {
   let input = convertInputIntegerArray(strInput);
-  let empty = generateGrid();
-  let grid = [...empty];
+  let grid = generateGrid(1000);
+
   input.map((row) => {
     let [x1, y1] = row[0];
     let [x2, y2] = row[1];
@@ -618,10 +627,31 @@ function game(strInput) {
   return grid;
 }
 
-// console.table(convertInputIntegerArray(testInput));
-// console.table(generateGrid());
+const filledTable = game(input);
 
-let empty = generateGrid();
-// console.table(mapLines(empty, 0, 5, 0, 2));
-mapLines(empty, 0, 5, 0, 2);
-// console.log(game(testInput));
+function countTable(grid) {
+  let counter = 0;
+  for (let i = 0; i < 1000; i++) {
+    for (let j = 0; j < 1000; j++) {
+      if (grid[i][j] >= 2) {
+        counter += 1;
+      }
+    }
+  }
+  return counter;
+}
+
+console.log(countTable(filledTable));
+
+// let testGrid = [
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+// ];
