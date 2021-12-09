@@ -251,4 +251,73 @@ eachVal.map((row) =>
   })
 );
 
-console.log(counter);
+// console.log(counter);
+
+/// Correct Solution
+
+let lines = [];
+input.split("\n").forEach((x) => {
+  let each = x.split(" | ");
+  lines.push({ inVal: each[0].split(" "), outVal: each[1].split(" ") });
+});
+
+let sum = 0;
+
+for (let i = 0; i < lines.length; i++) {
+  let decode = new Array(10);
+  decode[1] = lines[i].inVal.find((x) => x.length == 2);
+  decode[4] = lines[i].inVal.find((x) => x.length == 4);
+  decode[7] = lines[i].inVal.find((x) => x.length == 3);
+  decode[8] = lines[i].inVal.find((x) => x.length == 7);
+  decode[3] = lines[i].inVal.find((x) => {
+    let split = x.split("");
+    let z = decode[7].split("");
+    return (
+      split.length == 5 &&
+      split.filter((value) => !z.includes(value)).length == 2
+    );
+  });
+  decode[5] = lines[i].inVal.find((x) => {
+    let split = x.split("");
+    let z = decode[4].split("");
+    return (
+      split.length == 5 &&
+      split.filter((value) => !z.includes(value)).length == 2 &&
+      x != decode[3]
+    );
+  });
+  decode[2] = lines[i].inVal.find(
+    (x) => x.length == 5 && x != decode[3] && x != decode[5]
+  );
+  decode[6] = lines[i].inVal.find((x) => {
+    let split = x.split("");
+    let z = decode[1].split("");
+    return (
+      split.length == 6 &&
+      split.filter((value) => !z.includes(value)).length == 5
+    );
+  });
+  decode[9] = lines[i].inVal.find((x) => {
+    let split = x.split("");
+    let z = decode[4].split("");
+    return (
+      split.length == 6 &&
+      split.filter((value) => !z.includes(value)).length == 2 &&
+      x != decode[6]
+    );
+  });
+  decode[0] = lines[i].inVal.find(
+    (x) => x.length == 6 && x != decode[6] && x != decode[9]
+  );
+  decode.forEach((x, i) => {
+    decode[i] = x.split("").sort().join("");
+  });
+
+  let number = "";
+  lines[i].outVal.forEach((x) => {
+    number += decode.indexOf(x.split("").sort().join(""));
+  });
+  sum += parseInt(number);
+}
+
+console.log(sum);
