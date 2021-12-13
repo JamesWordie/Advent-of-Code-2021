@@ -1080,32 +1080,30 @@ const fillGrid = (grid, points) => {
 
 const mappedGrid = fillGrid(grid, points);
 // console.table(fillGrid(grid, points));
+let newGrid = [...mappedGrid];
 
-const foldPaper = (fold, grid) => {
+const foldPaper = (fold) => {
   const [axis, foldLine] = fold;
-  let mappedGrid = [...grid];
 
   if (axis === "y") {
     for (let y = 0; y < foldLine; y++) {
-      for (let x = 0; x < mappedGrid[y].length; x++) {
-        // console.log(mappedGrid[y][x]);
-        mappedGrid[y][x] = mappedGrid[y][x] | mappedGrid[2 * foldLine - y]?.[x];
+      for (let x = 0; x < newGrid[y].length; x++) {
+        newGrid[y][x] = newGrid[y][x] | newGrid[2 * foldLine - y]?.[x];
       }
     }
-    mappedGrid.length = foldLine;
+    newGrid.length = foldLine;
   } else {
-    for (let y = 0; y < mappedGrid.length; y++) {
+    for (let y = 0; y < newGrid.length; y++) {
       for (let x = 0; x < foldLine; x++) {
-        mappedGrid[y][x] = mappedGrid[y][x] | mappedGrid[y][2 * foldLine - x];
+        newGrid[y][x] = newGrid[y][x] | newGrid[y][2 * foldLine - x];
       }
-      mappedGrid[y].length = foldLine;
+      newGrid[y].length = foldLine;
     }
   }
-  return mappedGrid;
+  return newGrid;
 };
 
-let foldedPaper = foldPaper(["x", 655], mappedGrid); // Part 1 puzzle input
-// let foldedPaper = foldPaper(["y", 7], mappedGrid); // Part 1 test input
+let foldedPaper = foldPaper(folds[0]); // Part 1 puzzle input
 
 const part1 = () => {
   let count = 0;
@@ -1117,13 +1115,13 @@ part1();
 
 // Part 2
 
-const fullFolds = folds.map((fold) => {
-  foldPaper(fold, mappedGrid);
+const part2 = folds.map((fold) => {
+  let tmpGrid = foldPaper(fold);
+  //   console.table(tmpGrid);
+  console.log(
+    tmpGrid
+      .map((row) => row.map((point) => (point ? "#" : " ")).join(""))
+      .join("\n"),
+    "Part 2"
+  );
 });
-// console.log(fullFolds);
-
-// console.log(
-//   fullFolds
-//     .map((line) => line.map((dot) => (dot ? "#" : " ")).join(""))
-//     .join("\n")
-// );
