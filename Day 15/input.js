@@ -1,4 +1,4 @@
-const input = `7467923161199853975163878964955815881991642676938912451447919792683728694766149341499879987416299819
+export const input = `7467923161199853975163878964955815881991642676938912451447919792683728694766149341499879987416299819
 1791159221998515888739659622119122992926373186498969624468691386695488683281672918635142232198939239
 9485796811924495714722441818193791389792933213587924999989769968213287794239372869154239239897583649
 2277171525886579114528199488879687862967391988729261336278173814179663423317697525489998786347371356
@@ -99,7 +99,7 @@ const input = `74679231611998539751638789649558158819916426769389124514479197926
 9999478422468217991289896971319159799529511886742239745859781319654169919913856917468872561861712919
 2798217219738855755749522266326446838229933717751932193589926835391162658998953169476898614839119719`;
 
-const testInput = `1163751742
+export const testInput = `1163751742
 1381373672
 2136511328
 3694931569
@@ -109,59 +109,3 @@ const testInput = `1163751742
 3125421639
 1293138521
 2311944581`;
-
-// P1 -> Test Answer = 40
-// P2 -> Test Answer = 315
-
-const inputArr = input.split(/\n/).map((row) => row.split("").map(Number));
-
-const neighbours = [
-  [1, 0],
-  [0, 1],
-  [-1, 0],
-  [0, -1],
-];
-
-// Part 1
-
-const sortQueue = (queue) => {
-  return queue.sort((a, b) => a.risk - b.risk);
-};
-
-const shortestPath = (grid, start = [0, 0]) => {
-  const xLength = grid[0].length - 1;
-  const yLength = grid.length - 1;
-
-  const queue = [{ point: start, risk: 0 }];
-  const visitedNode = new Set();
-
-  while (queue.length) {
-    const {
-      point: [x, y],
-      risk,
-    } = queue.shift();
-
-    if (y === yLength && x === xLength) return risk;
-
-    let neighbourPoints = neighbours.map(([curX, curY]) => [
-      curX + x,
-      curY + y,
-    ]);
-
-    let filteredPoints = neighbourPoints
-      .filter(([x, y]) => grid[y]?.[x])
-      .filter((position) => !visitedNode.has(position + ""));
-
-    filteredPoints.forEach((position) => {
-      visitedNode.add(position + "");
-      queue.push({
-        point: position,
-        risk: risk + grid[position[1]][position[0]],
-      });
-    });
-
-    sortQueue(queue);
-  }
-};
-
-console.log(shortestPath(inputArr), "Part 1");
