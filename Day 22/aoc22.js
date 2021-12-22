@@ -31,7 +31,6 @@ function filterInput(arr) {
     } else {
       vals.push([command, x, y, z]);
     }
-    // vals.push([command, x[0], x[1], y[0], y[1], z[0], z[1]]);
   });
   return vals;
 }
@@ -40,24 +39,14 @@ function filterInput(arr) {
 const commands = filterInput(inputArr);
 
 const part1 = (commands) => {
-  let setRes = new Map();
   let uniqSet = new Set();
   commands.map((row) => {
     for (let x = row[1][0]; x < row[1][1] + 1; x++) {
       for (let y = row[2][0]; y < row[2][1] + 1; y++) {
         for (let z = row[3][0]; z < row[3][1] + 1; z++) {
           if (row[0] === "on") {
-            // setRes.set([x, y, z], "on");
             uniqSet.add(`${x}-${y}-${z}`);
           } else if (row[0] === "off") {
-            // setRes.set([x, y, z], "off");
-            // for (let itm of uniqSet) {
-            //   console.log(typeof itm);
-            //   itm === [x, y, z]
-            //     ? uniqSet.delete([x, y, z])
-            //     : uniqSet.add([x, y, z]);
-            // }
-            // console.log(uniqSet.has([x, y, z]));
             uniqSet.delete(`${x}-${y}-${z}`);
           }
         }
@@ -65,25 +54,7 @@ const part1 = (commands) => {
     }
   });
 
-  //   console.log(uniqSet.size);
   return uniqSet.size;
-
-  //   let counter = {};
-  //   for (let item of setRes) {
-  //     if (item[1] === "on") {
-  //       !(item[0].toString() in counter)
-  //         ? (counter = { ...counter, [item[0].toString()]: 1 })
-  //         : (counter[item[0].toString()] += 1);
-  //     } else {
-  //       !(item[0].toString() in counter)
-  //         ? (counter = { ...counter, [item[0].toString()]: -1 })
-  //         : (counter[item[0].toString()] -= 1);
-  //     }
-  //   }
-
-  //   let c;
-  //   c = Object.values(counter).filter((i) => i === 1 || i === 0);
-  //   return c.length;
 };
 console.time("start");
 console.log(part1(commands));
