@@ -90,7 +90,7 @@ function readPacket(str) {
   let pos = 0;
 
   if (type === 4) {
-    return typeFour(pos, str, version, num);
+    return typeFour(num, pos, version, str);
   }
 
   let subValues = [];
@@ -126,79 +126,3 @@ function readPacket(str) {
 let [part2, part1] = readPacket(hexToBinary);
 console.log(part1, "Part 1");
 console.log(part2, "Part 2");
-
-// const typeFour = (currentNum, position, version, input) => {
-//   position = 6;
-//   input = input.substr(6);
-//   let moreBits = true;
-//   while (moreBits) {
-//     moreBits = input[0] === "1";
-//     currentNum = currentNum * 16 + Number.parseInt(input.substr(1, 4), 2);
-//     position += 5;
-//     input = input.substr(5);
-//   }
-//   return { currentNum, version, position };
-// };
-
-// const lengthTypeZero = (subPacketValues, inputBinStr, version, position) => {
-//   let length = Number.parseInt(inputBinStr.substr(7, 15), 2);
-//   let subPacket = inputBinStr.substr(22, length);
-//   while (subPacket.length > 0) {
-//     let res = readBinary(subPacket);
-//     subPacketValues.push(res[0]);
-//     version += res[1];
-//     subPacket = subPacket.substr(res[2]);
-//   }
-//   position += 22 + length;
-//   return subPacketValues, subPacket;
-// };
-
-// const readBinary = (inputBinStr) => {
-//   let version = Number.parseInt(inputBinStr.substr(0, 3), 2);
-//   let type = Number.parseInt(inputBinStr.substr(3, 3), 2);
-
-//   let currentNum = 0;
-//   let position = 0;
-
-//   // type ID 4
-//   if (type === 4) {
-//     return typeFour(currentNum, position, version, inputBinStr);
-//   }
-
-//   let subPacketValues = [];
-
-//   ////// OPERATOR //////
-//   // length type ID 0
-//   if (inputBinStr[6] === "0") {
-//     let length = parseInt(inputBinStr.substr(7, 15), 2);
-//     let sub = inputBinStr.substr(22, length);
-//     while (sub.length > 0) {
-//       let res = readBinary(sub);
-//       subPacketValues.push(res[0]);
-//       version += res[1];
-//       sub = sub.substr(res[2]);
-//     }
-//     position += 22 + length;
-//     // [subPacketValues, inputBinStr] = lengthTypeZero(
-//     //   subPacketValues,
-//     //   inputBinStr,
-//     //   version,
-//     //   position
-//     // );
-//   } else {
-//     let packets = parseInt(inputBinStr.substr(7, 11), 2);
-//     position = 18;
-//     let sub = inputBinStr.substr(18);
-//     for (let i = 0; i < packets; i++) {
-//       let res = readBinary(inputBinStr.substr(position));
-//       subPacketValues.push(res[0]);
-//       version += res[1];
-//       position += res[2];
-//       sub = sub.substr(res[2]);
-//     }
-//   }
-
-//   return { currentNum, version, position };
-// };
-
-// console.log(readBinary(hexToBinary));
