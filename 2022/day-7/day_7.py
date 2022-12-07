@@ -1,3 +1,4 @@
+import bisect
 from os.path import abspath, join
 
 # Sample Output
@@ -21,7 +22,7 @@ with open('day-7/input.txt', encoding='utf-8') as file:
 # print(data)
 
 # with open('day-7/sample.txt', encoding='utf-8') as file:
-#     data = [i for i in file.read().strip().split("\n")]
+    # data = [i for i in file.read().strip().split("\n")]
 # print(data)
 
 file_system = {
@@ -53,3 +54,10 @@ for size in sizes:
     counter += size
 
 print('part 1', counter)
+
+# Part 2
+required_space = 30000000 - (70000000 - sizes[-1])
+for size in sizes:
+  if size >= required_space:
+    print('part 2', size)
+    break
