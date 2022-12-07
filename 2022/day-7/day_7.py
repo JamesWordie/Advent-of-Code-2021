@@ -1,4 +1,3 @@
-import bisect
 from os.path import abspath, join
 
 # Sample Output
@@ -54,7 +53,3 @@ for size in sizes:
     counter += size
 
 print('part 1', counter)
-
-# required_space = 30000000 - (70000000 - sizes[-1])
-# i = bisect.bisect_left(sizes, required_space)
-# print('part 2', sizes[i]) # 2
