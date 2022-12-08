@@ -46,6 +46,7 @@ for row in range(1, len(grid)-1):
 print('Part 1', visible)
 
 # Part 2
+# Count along the current row, from pos to left edge
 def countToLeft(row, col):
   total = 0
   for i in range(col-1, -1, -1):
@@ -55,6 +56,7 @@ def countToLeft(row, col):
       return total+1
   return total
 
+# Count along the current row, from pos to right edge
 def countToRight(row, col):
   total = 0
   for i in range(col+1, len(grid[0])):
@@ -64,6 +66,7 @@ def countToRight(row, col):
       return total+1
   return total
 
+# Count along the current col, from pos to top edge
 def countToTop(row, col):
   total = 0
   for i in range(row-1, -1, -1):
@@ -73,6 +76,7 @@ def countToTop(row, col):
       return total+1
   return total
 
+# Count along the current col, from pos to bottom edge
 def countToBottom(row, col):
   total = 0
   for i in range(row+1,len(grid)):
