@@ -40,12 +40,6 @@ class Monkey:
                 return ((old * second_arg) % lcm_modulo)
             return floor((old * second_arg) / 3)
 
-    def add_item(self, item):
-        self.items.append(item)
-
-    def remove_item(self, item):
-        self.items.remove(item)
-
     def test_item(self, item):
         if item % self.test_int == 0:
             return True
@@ -55,23 +49,15 @@ class Monkey:
     def solve(self, item, lcm_modulo):
         new_item = self.calculation(item, lcm_modulo)
         test_new = self.test_item(new_item)
-        self.remove_item(item)
+        self.items.remove(item)
         self.counter += 1
         if test_new:
             return (self.true_id, new_item)
         else:
             return (self.false_id, new_item)
 
-    def get_id(self):
-        return self.monkey_id
-
-    def get_items(self):
-        return self.items
-
-    def get_counter(self):
-        return self.counter
-
-monkey_list = dict()
+monkey_dict = dict()
+monkey_counter = []
 
 def solve_problem(rounds:int, part_2 = False):
     # sample_monkey_test_lcm = lcm(13, 17, 19, 23) # 96577
@@ -86,25 +72,24 @@ def solve_problem(rounds:int, part_2 = False):
         true_id_int = int(true_id.split('monkey ')[1])
         false_id_int = int(false_id.split('monkey ')[1])
 
-        monkey_list[int_id] = Monkey(int_id, items_list, operation_str, test_int, true_id_int, false_id_int, part_2)
+        monkey_dict[int_id] = Monkey(int_id, items_list, operation_str, test_int, true_id_int, false_id_int, part_2)
 
     # Loop in range
     for _ in range(rounds):
         # Loop for monkey in each round
-        for monkey in monkey_list.items():
+        for monkey in monkey_dict.items():
             _, monkey_obj = monkey
-            if len(monkey_obj.get_items()) == 0:
+            if len(monkey_obj.items) == 0:
                 continue
             # Loop items in each monkey
-            for _ in range(len(monkey_obj.get_items())):
-                item = monkey_obj.get_items()[0]
+            for _ in range(len(monkey_obj.items)):
+                item = monkey_obj.items[0]
                 move_id, new_item = monkey_obj.solve(item, monkey_test_lcm)
-                monkey_list[move_id].add_item(new_item)
+                monkey_dict[move_id].items.append(new_item)
 
-    monkey_counter = []
     # Get all monkey counter, add to list
-    for monkey in monkey_list.values():
-        monkey_counter.append(monkey.get_counter())
+    for monkey in monkey_dict.values():
+        monkey_counter.append(monkey.counter)
 
     # Get product of two greater and return
     monkey_product = prod(sorted(monkey_counter, reverse=True)[0:2])
