@@ -3,7 +3,7 @@ with open('day-9/input.txt', encoding='utf-8') as file:
 
 # with open('day-9/sample.txt', encoding='utf-8') as file:
     # data = [j.split() for j in [i for i in file.read().strip().split("\n")]]
-# print(data)
+print(data)
 
 def move_snake(pos, direct):
     if direct == 'R':
