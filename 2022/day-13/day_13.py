@@ -8,21 +8,9 @@ def check_int(itm):
 def check_list(itm):
     return type(itm) is list
 
-# def itm_checks(left, right, ind):
-#     # same list len and no diff
-#     if len(left) <= ind >= len(right):
-#         return None
-#     # right list len < left list len
-#     if ind >= len(right):
-#         return False
-#     # left list len < right list len
-#     if ind >= len(left):
-#         return True
-
 def compare_val(left, right, ind):
     # print(left, right, ind)
-    # itm_checks(left, right, ind)
-        # same list len and no diff
+    # same list len and no diff
     if len(left) <= ind >= len(right):
         return None
     # right list len < left list len
