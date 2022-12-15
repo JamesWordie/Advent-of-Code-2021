@@ -41,5 +41,35 @@ for sensor in sensors:
 
 print('Part 1', len(not_beacons))
 
-X_MIN, Y_MIN = 0, 0
-X_MAX, Y_MAX = 4_000_000, 4_000_000
+XY_MIN = 0
+XY_MAX = 4_000_000
+
+########### NOT SUBMITTED AS TAKEN FROM ONLINE AS WAS STUCK ##############
+
+def get_boundary(x, y, r):
+    temp = (x, y+r)
+    while temp != (x+r, y):
+        temp = (temp[0]+1, temp[1]-1)
+        yield temp
+    while temp != (x, y-r):
+        temp = (temp[0]-1, temp[1]-1)
+        yield temp
+    while temp != (x-r, y):
+        temp = (temp[0]-1, temp[1]+1)
+        yield temp
+    while temp != (x, y+r):
+        temp = (temp[0]+1, temp[1]+1)
+        yield temp
+
+for x, y, r, _ in sensors:
+    for px, py in get_boundary(x, y, r+1):
+        if XY_MIN <= px <= XY_MAX and XY_MIN <= py <= XY_MAX:
+            for dx, dy, dr, _ in sensors:
+                if (abs(px-dx) + abs(py-dy)) <= dr:
+
+                    break
+            else:
+                tuning_freq = 4000000 * px + py
+                # print("Beacon coords:", px, py, '\tTuning Freq: ', tuning_freq)
+                print("Part 2 - tuning freq:", tuning_freq)
+                exit(0)
