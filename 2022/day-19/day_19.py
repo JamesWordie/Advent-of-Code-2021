@@ -61,5 +61,7 @@ for line in data:
 
 # print(blueprints)
 
-for min in range(1,25):
-    for key, blueprint in blueprints.items():
+# for min in range(1,25):
+    # for key, blueprint in blueprints.items():
+
+#### TODO convert the following into - https://github.com/WilliamLP/AdventOfCode/blob/master/2022/day19.py
