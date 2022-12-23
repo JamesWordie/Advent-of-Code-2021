@@ -71,40 +71,49 @@ def solve(elf_set, part2 = False):
                 new_elves.add(elf)
                 continue
 
+            # Check the north direction
             if i == 0 and all([x not in tmp_eleves for x in north_check]):
                 proposals[elf] = (x, y-1)
                 continue
 
+            # Check the south direction
             if i <= 1 and all([x not in tmp_eleves for x in south_check]):
                 proposals[elf] = (x, y+1)
                 continue
 
+            # Check the west direction
             if i <= 2 and all([x not in tmp_eleves for x in west_check]):
                 proposals[elf] = (x-1, y)
                 continue
 
+            # Check the east direction
             if i <= 3 and all([x not in tmp_eleves for x in east_check]):
                 proposals[elf] = (x+1, y)
                 continue
 
-            # secondary checks to emulate the list wrapping around
+            # Second checks to emulate the list wrap
+
+            # Check the north direction
             if all([x not in tmp_eleves for x in north_check]):
                 proposals[elf] = (x, y-1)
                 continue
 
+            # Check the south direction
             if all([x not in tmp_eleves for x in south_check]):
                 proposals[elf] = (x, y+1)
                 continue
 
+            # Check the west direction
             if all([x not in tmp_eleves for x in west_check]):
                 proposals[elf] = (x-1, y)
                 continue
 
+            # Check the east direction
             if all([x not in tmp_eleves for x in east_check]):
                 proposals[elf] = (x+1, y)
                 continue
 
-            # else no move..
+            # No movements
             new_elves.add(elf)
 
         # invert dictionary
@@ -123,15 +132,18 @@ def solve(elf_set, part2 = False):
             if len(tmp_eleves & new_elves) == len(tmp_eleves):
               break
 
+        # Set the elves set for next iteration
         tmp_eleves = new_elves
 
+        # If counter == 10, ie part 1, and not part 2 exact and return the elves set
         if counter == 10 and not part2:
             break
 
-
+    # If part 2 return the counter for the number of rounds till they are stationary
     if part2:
         return counter
 
+    # Return the elves set for part 1
     return tmp_eleves
 
 # Solve for part 1
