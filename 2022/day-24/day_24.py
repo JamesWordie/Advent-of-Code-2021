@@ -75,6 +75,7 @@ class BlizzardMaze:
     def manhatten_dist(self, first, second):
         return sum(abs(v1 - v2) for v1,v2 in zip(first, second))
 
+    # Check the directions are the point up/down/left/right
     def check_points(self, c_point: tuple):
         n_points = set()
 
