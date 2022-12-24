@@ -108,11 +108,13 @@ class BlizzardMaze:
             if len(new_points) == 0:
                 new_points.add(self.start)
 
+            # Set the points for this round
             self.points = new_points
 
             timer += 1
 
         return timer
+
 # Constants & variable
 blizzards = []
 HEIGHT = len(grid)
