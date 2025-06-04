@@ -1,7 +1,15 @@
 
+import os
+
+
 def get_data(key):
-    with open('day-20/input.txt', encoding='utf-8') as file:
-        numbers = [(ind, int(val) * key) for ind, val in enumerate(file.read().strip().split("\n"))]
+    curr_dir = os.path.dirname(__file__)
+    input_path = os.path.join(curr_dir, 'input.txt')
+    with open(input_path, encoding='utf-8') as file:
+        numbers = [
+            (ind, int(val) * key)
+            for ind, val in enumerate(file.read().strip().split("\n"))
+        ]
         original_nums = [n[1] for n in numbers]
     return numbers, original_nums
 
